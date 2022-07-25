@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+}
+
+group 'ml.pyroneon'
+version '0.1.0-alpha'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'com.simtechdata:WaifUPnP:1.0' // Handles UPnP
+    implementation 'org.json:json:20211205' // JSON
+}
+
+test {
+    useJUnitPlatform()
+}
