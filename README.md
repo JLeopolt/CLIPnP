@@ -25,9 +25,9 @@ WINDOWS:
 LINUX:
 1. Create a new .sh file
 2. Open it, then type:
-#!/bin/sh
-cd <folder with your jar file>
-java -jar <your jar's filename>.jar
+- #!/bin/sh
+- cd <folder with your jar file>
+- java -jar <your jar's filename>.jar
 
 Copyright (c) 2022 PyroNeon Software.
 Licensed under LGPL3
