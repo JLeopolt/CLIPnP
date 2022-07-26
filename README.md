@@ -29,5 +29,5 @@ LINUX:
 cd <folder with your jar file>
 java -jar <your jar's filename>.jar
 
-Copyright (c) 2022 PyroNeon Software
+Copyright (c) 2022 PyroNeon Software.
 Licensed under LGPL3
