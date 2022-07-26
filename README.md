@@ -10,7 +10,24 @@ or you want the program to save your configuration on restarts, then look no fur
 JSON configuration manager, you can easily export and import configurations from a file.
 
 To save your config on restarts, add a filepath into your command-line argument when launching the program, pointing
-to the config file. Create new config files, mix them together, and save them, all with simple commands.
+to the config file. Just make sure to put the filepath in single quotes! Create new config files, mix them together, 
+and save them, all with simple user-friendly commands.
 
-Copyright (c) 2022 PyroNeon Software
-Licensed under LGPL3
+Are you a coder yourself? Working with CLIPnP is a breeze with the specific, transparent JavaDoc!
+
+#Jar not launching? Here's a quick-fix:
+#WINDOWS:
+1. Create a new text-file; rename it to #run.bat
+2. Open it, then type: java -jar #<path to your jar file, and it's filename>.jar
+3. Save the file
+4. Run it
+
+#LINUX:
+1. Create a new .sh file
+2. Open it, then type:
+#!/bin/sh
+cd <folder with your jar file>
+java -jar <your jar's filename>.jar
+
+#Copyright (c) 2022 PyroNeon Software
+#Licensed under LGPL3
