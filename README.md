@@ -15,19 +15,19 @@ and save them, all with simple user-friendly commands.
 
 Are you a coder yourself? Working with CLIPnP is a breeze with the specific, transparent JavaDoc!
 
-**Jar not launching? Here's a quick-fix:
-**WINDOWS:
-1. Create a new text-file; rename it to **run.bat
-2. Open it, then type: java -jar **<path to your jar file, and it's filename>.jar
+Jar not launching? Here's a quick-fix:
+WINDOWS:
+1. Create a new text-file; rename it to *run.bat
+2. Open it, then type: java -jar <path to your jar file, and it's filename>.jar
 3. Save the file
 4. Run it
 
-**LINUX:
+LINUX:
 1. Create a new .sh file
 2. Open it, then type:
 #!/bin/sh
-cd **<folder with your jar file>
-java -jar **<your jar's filename>.jar
+cd <folder with your jar file>
+java -jar <your jar's filename>.jar
 
 #Copyright (c) 2022 PyroNeon Software
 #Licensed under LGPL3
