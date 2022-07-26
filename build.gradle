@@ -3,7 +3,20 @@ plugins {
 }
 
 group 'ml.pyroneon'
-version '0.1.1-alpha'
+version '0.1.2-alpha'
+
+jar {
+    manifest {
+        attributes("Main-Class": "ml.pyroneon.Main",
+                "Implementation-Title":   "CLIPnP",
+                "Implementation-Version": version)
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
 
 repositories {
     mavenCentral()

@@ -1,17 +1,26 @@
-/*
-    The main class which handles CLI interface.
- */
+package ml.pyroneon;
 
-import util.Protocol;
+import ml.pyroneon.util.Protocol;
 
-import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The main class of the entire program, which handles user commands and filepaths. The main method within
+ * this class should be the main method used by the Jar file.
+ */
 public class Main {
 
-    // Gets the Filepath between two single quotes.
+    /**
+     * Gets the filepath as a String by parsing a message until it finds the filepath between 2 single quotes.
+     * This works great by easily targeting the useful content, but current implementation requires the user
+     * to always include the single quotes even if there are no spaces in their filepath.
+     *
+     * @param content The raw content message to-be-processed, which may contain more than just the filepath and it's quotes.
+     * @return Returns the filepath without single quotes. Returns null if no filepath was found. (Which may occur if the user
+     * forgets to put single quotes around the filepath, so error message should remind them of that)
+     */
     private static String getFilepath(String content){
         Pattern pattern = Pattern.compile("'([^']*)'");
         Matcher matcher = pattern.matcher(content);
@@ -22,6 +31,14 @@ public class Main {
         return null;
     }
 
+    /**
+     * Like the port() method, this is a helper for the CLI Main method.
+     * It is called whenever the user issues a command starting with 'config' and acts in a similar fashion
+     * to the port() method. For more clarification, check out the port() method's documentation.
+     *
+     * @param src The CLIPnP object to execute the command on, because this is a static method.
+     * @param msg The WHOLE message (unparsed) which is necessary for the filepath to be extracted if it contains spaces.
+     */
     private static void config(CLIPnP src, String msg){
         String[] parsed = msg.split(" ");
         try{
@@ -39,6 +56,15 @@ public class Main {
         }
     }
 
+    /**
+     * This is a helper method for the command-line interface Main method. It is called whenever
+     * the user issues a command starting with the word "port" , and is further processed by a
+     * cascading if else ladder, finally calling the correct method with provided command-params,
+     * or screaming at the user and giving them a soft error message.
+     *
+     * @param src The CLIPnP object to execute the command on, because this is a static method.
+     * @param parsed The parsed user command which the main console already split apart.
+     */
     private static void port(CLIPnP src, String[] parsed){
         try{
             if(parsed[1].equals("open")){
@@ -89,12 +115,20 @@ public class Main {
         }
     }
 
+    /**
+     The main method for the entire program. Handles the console side of the interface, by first getting the Implementation Version from the Jar's
+     Manifest. Next, it calls the isUPnPEnabled() method from WaifUPnP to determine if UPnP is actually supported by the client's router. If not, then
+     the program terminates, otherwise, the program will proceed to check for a config file provided as a command-line argument (CLA) which if found, will
+     be applied and sent to the CLIPnP class on initialization. Finally, the program will enter it's main phase; where it constantly prompts the user for
+     input as a command-line interface. The user's commands are parsed and appropriate responses are issued accordingly. The workload of the commands is
+     split up into their own separate helper methods.
+     */
     public static void main(String[] args){
         Scanner keyboard = new Scanner(System.in);
 
         String version = Main.class.getPackage().getImplementationVersion();
         if(version == null){
-            version = "Unknown Version";
+            version = "Developer Version";
         }
 
         printVersionInfo(version);
@@ -107,7 +141,7 @@ public class Main {
 
         // Check if a CLA specifies config file location.
         CLIPnP src;
-        if(args.length > 1){
+        if(args.length >= 1){
             try {
                 // Convert array of CLArgs into a formatted Filepath surrounded by single quotes.
                 String build = args[0];
@@ -117,9 +151,9 @@ public class Main {
                 build = getFilepath(build);
 
                 src = new CLIPnP(Config.readFromFile(build));
-            } catch (IOException e) {
+            } catch (Exception e) {
                 src = new CLIPnP();
-                System.out.println("(WARN) Config file could not be read. Did you use single quotes? Proceeding with blank config.");
+                System.out.println("(WARN) Config file could not be read. Did you use single quotes? Proceeding with empty config.");
             }
         }
         else{
@@ -158,6 +192,10 @@ public class Main {
         System.out.println("Thank you for using CLIPnP " + version);
     }
 
+    /**
+     * Prints all the available commands, some information about command-line args, and each command's syntax as well as
+     * some information about what each command does.
+     */
     private static void printHelp(){
         System.out.println("(i) Command-Line Arguments:");
         System.out.println("\t <filepath> - Opens config from a config file. All saved ports automatically opened. (Use single quotes)");
@@ -172,11 +210,15 @@ public class Main {
         System.out.println("""
                 \t port - Interact with a port. Acceptable port range is 0-65535.
                 \t\t port open <tcp, udp> <0-65535> - Opens a new port based on params.
-                \t\t port close index <index> - Closes registered port and removes it from config by index. Index starts from 1.
+                \t\t port close index <i> - Closes registered port and removes it from config by index. Index starts from 1.
                 \t\t port close <tcp, udp> <0-65535> - Forcefully closes a port, if registered, removes it from current config.
                 \t\t port query <tcp, udp> <0-65535> - Get a port's status. (Open/Closed)""");
     }
 
+    /**
+     * Prints a text-art logo, the software version and some copyright/licensing information.
+     * @param version The version of the software, obtained from manifest of Jar file.
+     */
     public static void printVersionInfo(String version){
         System.out.println(
                         "   _____ _      _____ _____       _____  \n" +
@@ -184,7 +226,7 @@ public class Main {
                         " | |    | |      | | | |__) | __ | |__) |\n" +
                         " | |    | |      | | |  ___/ '_ \\|  ___/ \n" +
                         " | |____| |____ _| |_| |   | | | | |     \n" +
-                        "  \\_____|______|_____|_|   |_| |_|_|     ");
+                        "  \\_____|______|_____|_|   |_| |_|_|     \n");
         System.out.println("CLIPnP " + version + " Copyright (c) 2022 PyroNeon Software");
         System.out.println("Licensed under LGPL3 - \"help\" for command help.");
     }
