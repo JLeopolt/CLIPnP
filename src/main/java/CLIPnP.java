@@ -4,11 +4,10 @@ import util.Protocol;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CLIPnP {
 
-    private List<Object> bindings;
+    private ArrayList<Bind> bindings;
 
     public CLIPnP() {
         bindings = new ArrayList<>();
@@ -21,17 +20,17 @@ public class CLIPnP {
 
     // Checks if a binding is already present
     public Bind containsBind(Bind bind){
-        for(Object obj : bindings){
+        for(Bind b : bindings){
             // If the binding already exists within the list, return true.
-            if(((Bind)obj).equals(bind)){
-                return ((Bind)obj);
+            if(b.equals(bind)){
+                return b;
             }
         }
         return null;
     }
 
     public void closePortByIndex(int index){
-        System.out.println(((Bind)bindings.get(index)).close());
+        System.out.println((bindings.get(index)).close());
         bindings.remove(index);
     }
 
@@ -56,13 +55,13 @@ public class CLIPnP {
     }
 
     // Opens all bindings from a list, and adds all of them to the bindings list
-    public int openAllPorts(List<Object> binds){
+    public int openAllPorts(ArrayList<Bind> binds){
         int no = 0;
-        for(Object obj : binds){
+        for(Bind bind : binds){
             // Ignore existing bindings.
-            if(!bindings.contains(obj)){
-                System.out.println(((Bind)obj).connect());
-                bindings.add(obj);
+            if(!bindings.contains(bind)){
+                bind.connect();
+                bindings.add(bind);
                 no++;
             }
         }
@@ -147,15 +146,16 @@ public class CLIPnP {
         // Print all bindings.
         System.out.println("\t Bindings:");
         int counter = 1;
-        for(Object obj : bindings){
-            System.out.println("\t\t "+counter+". "+((Bind)obj).toString());
+        for(Bind bind : bindings){
+            System.out.println("\t\t "+counter+". "+bind.toString());
         }
+        System.out.println();
     }
 
     // Close all ports and tell the user.
     public void close(){
-        for(Object obj : bindings){
-            System.out.println(((Bind)obj).close());
+        for(Bind bind : bindings){
+            System.out.println(bind.close());
         }
     }
 }

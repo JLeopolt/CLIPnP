@@ -6,16 +6,30 @@ import util.Protocol;
 
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Main {
 
-    private static void config(CLIPnP src, String[] parsed){
+    // Gets the Filepath between two single quotes.
+    private static String getFilepath(String content){
+        Pattern pattern = Pattern.compile("'([^']*)'");
+        Matcher matcher = pattern.matcher(content);
+        if(matcher.find()){
+            String toReturn = matcher.group();
+            return toReturn.substring(1,toReturn.length()-1);
+        }
+        return null;
+    }
+
+    private static void config(CLIPnP src, String msg){
+        String[] parsed = msg.split(" ");
         try{
             if(parsed[1].equals("add")){
-                src.addConfig(parsed[2]);
+                src.addConfig(getFilepath(msg));
             }
             else if(parsed[1].equals("save")){
-                src.save(parsed[2]);
+                src.save(getFilepath(msg));
             }
             else{
                 throw new IndexOutOfBoundsException();
@@ -95,10 +109,17 @@ public class Main {
         CLIPnP src;
         if(args.length > 1){
             try {
-                src = new CLIPnP(Config.readFromFile(args[0]));
+                // Convert array of CLArgs into a formatted Filepath surrounded by single quotes.
+                String build = args[0];
+                for(int i = 1; i < args.length; i++){
+                    build += " "+args[i];
+                }
+                build = getFilepath(build);
+
+                src = new CLIPnP(Config.readFromFile(build));
             } catch (IOException e) {
                 src = new CLIPnP();
-                System.out.println("(WARN) Config file could not be read. Proceeding with blank config.");
+                System.out.println("(WARN) Config file could not be read. Did you use single quotes? Proceeding with blank config.");
             }
         }
         else{
@@ -117,7 +138,7 @@ public class Main {
                 break;
             }
             else if(parsed[0].equals("config")){
-                config(src, parsed);
+                config(src, line);
             }
             else if(parsed[0].equals("info")){
                 src.printInfo(version);
@@ -139,19 +160,19 @@ public class Main {
 
     private static void printHelp(){
         System.out.println("(i) Command-Line Arguments:");
-        System.out.println("\t <filepath> - Opens config from a config file. All saved ports automatically opened.");
+        System.out.println("\t <filepath> - Opens config from a config file. All saved ports automatically opened. (Use single quotes)");
         System.out.println("(i) Commands:");
         System.out.println("\t stop - Gracefully stops the program. All unsaved config data will be lost. All ports will be closed.");
         System.out.println("\t help - Shows command info and syntax help.");
         System.out.println("\t info - Displays program and network info.");
         System.out.println("""
                 \t config - Interact with the config
-                \t\t config add <filepath> - Adds bindings from a file, to current config.
-                \t\t config save <directory> - Saves current config to a directory, as 'config.json'""");
+                \t\t config add <filepath> - Adds bindings from a file, to current config. (Use single quotes)
+                \t\t config save <directory> - Saves current config to a directory (Use single quotes), as "config.json\"""");
         System.out.println("""
                 \t port - Interact with a port. Acceptable port range is 0-65535.
                 \t\t port open <tcp, udp> <0-65535> - Opens a new port based on params.
-                \t\t port close <index> - Closes registered port and removes it from config by index. Index starts from 1.
+                \t\t port close index <index> - Closes registered port and removes it from config by index. Index starts from 1.
                 \t\t port close <tcp, udp> <0-65535> - Forcefully closes a port, if registered, removes it from current config.
                 \t\t port query <tcp, udp> <0-65535> - Get a port's status. (Open/Closed)""");
     }
