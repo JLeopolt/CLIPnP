@@ -175,7 +175,7 @@ public class CLIPnP {
 
     /**
      * Saves the current configuration list of binds to a file.
-     * @param dir The directory to save to, not a specific file. Saves as "config.json"
+     * @param dir The directory to save to, not a specific file. Saves as "config.clip"
      */
     public void save(String dir){
         new Config(bindings).saveToFile(dir);

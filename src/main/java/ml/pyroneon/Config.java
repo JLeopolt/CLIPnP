@@ -43,10 +43,10 @@ public class Config extends JSONObject {
 
     /**
      * Saves the Configuration to a JSON File.
-     * @param directory A filepath to a directory where the JSON file should be saved. The file will be named 'config.json'
+     * @param directory A filepath to a directory where the JSON file should be saved. The file will be named 'config.clip'
      */
     public void saveToFile(String directory){
-        String path = directory+"/config.json";
+        String path = directory+"/config.clip";
         try (FileWriter file = new FileWriter(path)) {
             //We can write any JSONArray or JSONObject instance to the file
             this.write(file);
