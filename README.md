@@ -31,4 +31,4 @@ LINUX:
 - java -jar <your jar's filename>.jar
 
 Copyright (c) 2022 PyroNeon Software.
-Licensed under LGPL3
+Licensed Under GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
