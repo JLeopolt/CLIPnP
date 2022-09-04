@@ -4,16 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d35baf5-9499-4bec-974c-73fc0a56c9c3" name="Changes" comment="Transitioned to beta 1.0.0, starting off with a restructuring of backend code. Moved commands from helper methods into their own classes under the commands package for ease of access and readability. Split their tasks into separate helper methods for the same reason. Created a new Console class, which is a wrapper for the console output, standardizing I/O format of the interface.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Help.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Path.java" afterDir="false" />
+    <list default="true" id="7d35baf5-9499-4bec-974c-73fc0a56c9c3" name="Changes" comment="Updated the Help system. Added new Help commands and now, specific help can be found for each command.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/CLIPnP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/CLIPnP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Network.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Network.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Configuration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Configuration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Port.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Port.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Console.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Console.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +218,14 @@
       <option name="project" value="LOCAL" />
       <updated>1662261231253</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Updated the Help system. Added new Help commands and now, specific help can be found for each command.">
+      <created>1662295701690</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1662295701690</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -243,6 +245,7 @@
     <MESSAGE value="Added full JavaDocs documentation for the entire project. Fixed config files not being read from command-line arguments." />
     <MESSAGE value="CLIPnP will now use .clip files instead of .JSON for more intuitive config saving. However, .JSON files will still be acceptable, and any file that contains a valid config JSON object (even a .txt file) will be accepted." />
     <MESSAGE value="Transitioned to beta 1.0.0, starting off with a restructuring of backend code. Moved commands from helper methods into their own classes under the commands package for ease of access and readability. Split their tasks into separate helper methods for the same reason. Created a new Console class, which is a wrapper for the console output, standardizing I/O format of the interface." />
-    <option name="LAST_COMMIT_MESSAGE" value="Transitioned to beta 1.0.0, starting off with a restructuring of backend code. Moved commands from helper methods into their own classes under the commands package for ease of access and readability. Split their tasks into separate helper methods for the same reason. Created a new Console class, which is a wrapper for the console output, standardizing I/O format of the interface." />
+    <MESSAGE value="Updated the Help system. Added new Help commands and now, specific help can be found for each command." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated the Help system. Added new Help commands and now, specific help can be found for each command." />
   </component>
 </project>

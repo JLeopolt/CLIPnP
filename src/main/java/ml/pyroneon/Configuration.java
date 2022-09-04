@@ -1,10 +1,12 @@
 package ml.pyroneon;
 
+import ml.pyroneon.commands.Config;
 import ml.pyroneon.util.Console;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ml.pyroneon.util.Bind;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,16 +46,15 @@ public class Configuration extends JSONObject {
 
     /**
      * Saves the Configuration to a JSON File.
-     * @param directory A filepath to a directory where the JSON file should be saved. The file will be named 'config.clip'
+     * @param directory A filepath to save to. CANNOT be a directory.
      */
     public void saveToFile(String directory){
-        String path = directory+"/config.clip";
-        try (FileWriter file = new FileWriter(path)) {
+        try (FileWriter file = new FileWriter(directory)) {
             //We can write any JSONArray or JSONObject instance to the file
             this.write(file);
-            Console.sendResponse("Saved config to "+path);
+            Console.sendResponse("Saved config to "+directory);
         } catch (IOException e) {
-            Console.sendError("Failed to save config to "+path+". Did you use single quotes?");
+            Console.sendError("Failed to save config to "+directory+". Did you use single quotes?");
         }
     }
 

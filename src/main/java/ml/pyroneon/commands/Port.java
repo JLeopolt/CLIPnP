@@ -65,19 +65,23 @@ public class Port {
             // Determine protocol and port number
             if(args[2].equals("tcp")){
                 Main.cliPnP.closePort(Protocol.TCP, Integer.parseInt(args[3]));
+                return;
             }
             else if(args[2].equals("udp")){
                 Main.cliPnP.closePort(Protocol.UDP, Integer.parseInt(args[3]));
+                return;
             }
             else if(args[2].equals("index")){
                 int index = Integer.parseInt(args[3]);
                 if(index > 0){
                     Main.cliPnP.closePortByIndex(index-1);
                 }
+                return;
             }
+            Console.sendSyntaxError(Port.class.getSimpleName());
         }
         catch(IndexOutOfBoundsException e){
-            Console.sendError("Value out of bounds. Triple-check your syntax, see \"help\" for command help.");
+            Console.sendSyntaxError(Port.class.getSimpleName());
         }
     }
 
