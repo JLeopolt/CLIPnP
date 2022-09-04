@@ -1,6 +1,9 @@
 package ml.pyroneon;
 
-import ml.pyroneon.util.Protocol;
+import ml.pyroneon.commands.Config;
+import ml.pyroneon.commands.Network;
+import ml.pyroneon.commands.Port;
+import ml.pyroneon.util.Console;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -12,6 +15,8 @@ import java.util.regex.Pattern;
  */
 public class Main {
 
+    public static CLIPnP cliPnP;
+
     /**
      * Gets the filepath as a String by parsing a message until it finds the filepath between 2 single quotes.
      * This works great by easily targeting the useful content, but current implementation requires the user
@@ -21,7 +26,7 @@ public class Main {
      * @return Returns the filepath without single quotes. Returns null if no filepath was found. (Which may occur if the user
      * forgets to put single quotes around the filepath, so error message should remind them of that)
      */
-    private static String getFilepath(String content){
+    public static String getFilepath(String content){
         Pattern pattern = Pattern.compile("'([^']*)'");
         Matcher matcher = pattern.matcher(content);
         if(matcher.find()){
@@ -32,87 +37,46 @@ public class Main {
     }
 
     /**
-     * Like the port() method, this is a helper for the CLI Main method.
-     * It is called whenever the user issues a command starting with 'config' and acts in a similar fashion
-     * to the port() method. For more clarification, check out the port() method's documentation.
-     *
-     * @param src The CLIPnP object to execute the command on, because this is a static method.
-     * @param msg The WHOLE message (unparsed) which is necessary for the filepath to be extracted if it contains spaces.
+     * Prints all the available commands, some information about command-line args, and each command's syntax as well as
+     * some information about what each command does.
      */
-    private static void config(CLIPnP src, String msg){
-        String[] parsed = msg.split(" ");
-        try{
-            if(parsed[1].equals("add")){
-                src.addConfig(getFilepath(msg));
-            }
-            else if(parsed[1].equals("save")){
-                src.save(getFilepath(msg));
-            }
-            else{
-                throw new IndexOutOfBoundsException();
-            }
-        }catch(Exception e){
-            System.out.println("(ERROR) /config Invalid syntax. See \"help\" for command help.");
-        }
+    private static void printHelp(){
+        Console.sendDetails("Command-Line Arguments:");
+        Console.println("\t <filepath> - Opens config from a config file. All saved ports automatically opened. (Use single quotes)");
+        Console.println("(i) Commands:");
+        Console.println("\t stop - Gracefully stops the program. All unsaved config data will be lost. All ports will be closed.");
+        Console.println("\t help - Shows command info and syntax help.");
+        Console.println("\t info - Displays program and network info.");
+        Console.println("""
+                \t network - Interact with the network.
+                \t\t network list - View network information.""");
+        Console.println("""
+                \t config - Interact with the config.
+                \t\t config add <filepath> - Adds bindings from a file, to current config. (Use single quotes)
+                \t\t config save <directory> - Saves current config to a directory (Use single quotes), as "config.json\"""");
+        Console.println("""
+                \t port - Interact with a port. Acceptable port range is 0-65535.
+                \t\t port open <tcp, udp> <0-65535> - Opens a new port based on params.
+                \t\t port close index <i> - Closes registered port and removes it from config by index. Index starts from 1.
+                \t\t port close <tcp, udp> <0-65535> - Forcefully closes a port, if registered, removes it from current config.
+                \t\t port query <tcp, udp> <0-65535> - Get a port's status. (Open/Closed)
+                \t\t port list - Lists all currently open ports (controlled by CLIPnP).""");
     }
 
     /**
-     * This is a helper method for the command-line interface Main method. It is called whenever
-     * the user issues a command starting with the word "port" , and is further processed by a
-     * cascading if else ladder, finally calling the correct method with provided command-params,
-     * or screaming at the user and giving them a soft error message.
-     *
-     * @param src The CLIPnP object to execute the command on, because this is a static method.
-     * @param parsed The parsed user command which the main console already split apart.
+     * Prints a text-art logo, the software version and some copyright/licensing information.
+     * @param version The version of the software, obtained from manifest of Jar file.
      */
-    private static void port(CLIPnP src, String[] parsed){
-        try{
-            if(parsed[1].equals("open")){
-                // Determine protocol and port number
-                if(parsed[2].equals("tcp")){
-                    src.openPort(Protocol.TCP, Integer.parseInt(parsed[3]));
-                    return;
-                }
-                if(parsed[2].equals("udp")){
-                    src.openPort(Protocol.UDP, Integer.parseInt(parsed[3]));
-                    return;
-                }
-                throw new IndexOutOfBoundsException();
-            }
-            else if(parsed[1].equals("close")){
-                // Determine protocol and port number
-                if(parsed[2].equals("tcp")){
-                    src.closePort(Protocol.TCP, Integer.parseInt(parsed[3]));
-                    return;
-                }
-                if(parsed[2].equals("udp")){
-                    src.closePort(Protocol.UDP, Integer.parseInt(parsed[3]));
-                    return;
-                }
-                if(parsed[2].equals("index")){
-                    int index = Integer.parseInt(parsed[3]);
-                    if(index > 0){
-                        src.closePortByIndex(index-1);
-                        return;
-                    }
-                }
-                throw new IndexOutOfBoundsException();
-            }
-            else if(parsed[1].equals("query")){
-                // Determine protocol and port number
-                if(parsed[2].equals("tcp")){
-                    System.out.println(src.queryPort(Protocol.TCP, Integer.parseInt(parsed[3])));
-                    return;
-                }
-                if(parsed[2].equals("udp")){
-                    System.out.println(src.queryPort(Protocol.UDP, Integer.parseInt(parsed[3])));
-                    return;
-                }
-                throw new IndexOutOfBoundsException();
-            }
-        }catch(Exception e){
-            System.out.println("(ERROR) /port Invalid syntax. See \"help\" for command help.");
-        }
+    public static void printVersionInfo(String version){
+        Console.println(
+                "   _____ _      _____ _____       _____  \n" +
+                        "  / ____| |    |_   _|  __ \\     |  __ \\ \n" +
+                        " | |    | |      | | | |__) | __ | |__) |\n" +
+                        " | |    | |      | | |  ___/ '_ \\|  ___/ \n" +
+                        " | |____| |____ _| |_| |   | | | | |     \n" +
+                        "  \\_____|______|_____|_|   |_| |_|_|     \n");
+        Console.sendDetails("CLIPnP " + version + " Copyright (c) 2022 PyroNeon Software");
+        Console.sendDetails("Licensed under LGPL3 - \"help\" for command help.");
     }
 
     /**
@@ -134,13 +98,12 @@ public class Main {
         printVersionInfo(version);
 
         if(!CLIPnP.isUPnPEnabled()){
-            System.out.println("(ERROR) UPnP service is not available on this network. You will have to port forward using conventional means through your router.");
-            System.out.println("Thank you for using CLIPnP " + version);
+            Console.sendError("UPnP service is not available on this network. You will have to port forward using conventional means through your router.");
+            Console.sendResponse("Thank you for using CLIPnP " + version);
             return;
         }
 
         // Check if a CLA specifies config file location.
-        CLIPnP src;
         if(args.length >= 1){
             try {
                 // Convert array of CLArgs into a formatted Filepath surrounded by single quotes.
@@ -150,17 +113,17 @@ public class Main {
                 }
                 build = getFilepath(build);
 
-                src = new CLIPnP(Config.readFromFile(build));
+                cliPnP = new CLIPnP(Configuration.readFromFile(build));
             } catch (Exception e) {
-                src = new CLIPnP();
-                System.out.println("(WARN) Config file could not be read. Did you use single quotes? Proceeding with empty config.");
+                cliPnP = new CLIPnP();
+                Console.sendWarning("Config file could not be read. Did you use single quotes? Proceeding with empty config.");
             }
         }
         else{
-            src = new CLIPnP();
+            cliPnP = new CLIPnP();
         }
 
-        System.out.print("CLIPnP: ");
+        Console.promptUser();
         String line = keyboard.nextLine();
         while(!line.equals("stop")){
             String[] parsed = line.split(" ");
@@ -168,66 +131,29 @@ public class Main {
             if(parsed[0].equals("help")){
                 printHelp();
             }
-            else if(parsed[0].equals("stop")){
-                break;
-            }
             else if(parsed[0].equals("config")){
-                config(src, line);
+                Config.execute(line);
             }
             else if(parsed[0].equals("info")){
-                src.printInfo(version);
+                cliPnP.printInfo(version);
             }
             else if(parsed[0].equals("port")){
-                port(src, parsed);
+                Port.execute(parsed);
+            }
+            else if(parsed[0].equals("network")){
+                Network.execute(parsed);
             }
             else{
-                System.out.println("(WARN) Unknown command entered. Please enter \"help\" for command help.");
+                Console.sendWarning("Unknown command entered. Please enter \"help\" for command help.");
             }
 
-            System.out.print("CLIPnP: ");
+            Console.promptUser();
             line = keyboard.nextLine();
         }
 
-        src.close();
-        System.out.println("Thank you for using CLIPnP " + version);
+        cliPnP.close();
+        Console.sendResponse("Thank you for using CLIPnP " + version);
     }
 
-    /**
-     * Prints all the available commands, some information about command-line args, and each command's syntax as well as
-     * some information about what each command does.
-     */
-    private static void printHelp(){
-        System.out.println("(i) Command-Line Arguments:");
-        System.out.println("\t <filepath> - Opens config from a config file. All saved ports automatically opened. (Use single quotes)");
-        System.out.println("(i) Commands:");
-        System.out.println("\t stop - Gracefully stops the program. All unsaved config data will be lost. All ports will be closed.");
-        System.out.println("\t help - Shows command info and syntax help.");
-        System.out.println("\t info - Displays program and network info.");
-        System.out.println("""
-                \t config - Interact with the config
-                \t\t config add <filepath> - Adds bindings from a file, to current config. (Use single quotes)
-                \t\t config save <directory> - Saves current config to a directory (Use single quotes), as "config.json\"""");
-        System.out.println("""
-                \t port - Interact with a port. Acceptable port range is 0-65535.
-                \t\t port open <tcp, udp> <0-65535> - Opens a new port based on params.
-                \t\t port close index <i> - Closes registered port and removes it from config by index. Index starts from 1.
-                \t\t port close <tcp, udp> <0-65535> - Forcefully closes a port, if registered, removes it from current config.
-                \t\t port query <tcp, udp> <0-65535> - Get a port's status. (Open/Closed)""");
-    }
 
-    /**
-     * Prints a text-art logo, the software version and some copyright/licensing information.
-     * @param version The version of the software, obtained from manifest of Jar file.
-     */
-    public static void printVersionInfo(String version){
-        System.out.println(
-                        "   _____ _      _____ _____       _____  \n" +
-                        "  / ____| |    |_   _|  __ \\     |  __ \\ \n" +
-                        " | |    | |      | | | |__) | __ | |__) |\n" +
-                        " | |    | |      | | |  ___/ '_ \\|  ___/ \n" +
-                        " | |____| |____ _| |_| |   | | | | |     \n" +
-                        "  \\_____|______|_____|_|   |_| |_|_|     \n");
-        System.out.println("CLIPnP " + version + " Copyright (c) 2022 PyroNeon Software");
-        System.out.println("Licensed under LGPL3 - \"help\" for command help.");
-    }
 }

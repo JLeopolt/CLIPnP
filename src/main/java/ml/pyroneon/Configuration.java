@@ -1,5 +1,6 @@
 package ml.pyroneon;
 
+import ml.pyroneon.util.Console;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import ml.pyroneon.util.Bind;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 /**
  * Used to track binds, mainly to save them in file form and read them back later.
  */
-public class Config extends JSONObject {
+public class Configuration extends JSONObject {
 
     /**
      * Creates a brand-new config file, used for saving.
      * @param bindings The configuration state, all the binds that should be saved.
      */
-    public Config(ArrayList<Bind> bindings){
+    public Configuration(ArrayList<Bind> bindings){
         JSONArray jarray = new JSONArray(bindings);
         put("binds", jarray);
     }
@@ -27,7 +28,7 @@ public class Config extends JSONObject {
     /**
      * @param line A serial JSON string.
      */
-    public Config(String line){
+    public Configuration(String line){
         super(line);
     }
 
@@ -37,8 +38,8 @@ public class Config extends JSONObject {
      * @return Returns a new Config object filled with all binds from the provided file.
      * @throws IOException In case the file can't be opened or isn't legible.
      */
-    public static Config readFromFile(String filepath) throws IOException {
-        return new Config(Files.readString(Path.of(filepath)));
+    public static Configuration readFromFile(String filepath) throws IOException {
+        return new Configuration(Files.readString(Path.of(filepath)));
     }
 
     /**
@@ -50,9 +51,9 @@ public class Config extends JSONObject {
         try (FileWriter file = new FileWriter(path)) {
             //We can write any JSONArray or JSONObject instance to the file
             this.write(file);
-            System.out.println("(i) Saved config to "+path);
+            Console.sendResponse("Saved config to "+path);
         } catch (IOException e) {
-            System.out.println("(ERROR) Failed to save config to "+path+". Did you use single quotes?");
+            Console.sendError("Failed to save config to "+path+". Did you use single quotes?");
         }
     }
 

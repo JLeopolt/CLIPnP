@@ -54,10 +54,10 @@ public class Bind extends JSONObject {
         }
 
         if(success){
-            System.out.println("(i) Successfully opened "+getProtocol()+" port: "+getPort());
+            Console.sendResponse("Successfully opened "+getProtocol()+" port: "+getPort());
             return true;
         }
-        System.out.println("(ERROR) Failed to open "+getProtocol()+" port: "+getPort());
+        Console.sendError("Failed to open "+getProtocol()+" port: "+getPort());
         return false;
     }
 
@@ -75,9 +75,9 @@ public class Bind extends JSONObject {
         }
 
         if(success){
-            return "(i) Successfully closed "+getProtocol()+" port: "+getPort();
+            return Console.getResponse("Successfully closed "+getProtocol()+" port: "+getPort());
         }
-        return "(ERROR) Failed to close "+getProtocol()+" port: "+getPort();
+        return Console.getError("Failed to close "+getProtocol()+" port: "+getPort());
     }
 
     /**

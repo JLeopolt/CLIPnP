@@ -2,6 +2,7 @@ package ml.pyroneon;
 
 import com.simtechdata.waifupnp.UPnP;
 import ml.pyroneon.util.Bind;
+import ml.pyroneon.util.Console;
 import ml.pyroneon.util.Protocol;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  */
 public class CLIPnP {
 
-    private ArrayList<Bind> bindings;
+    private final ArrayList<Bind> bindings;
 
     /**
      * Constructor without any config file provided. No ports are open by default.
@@ -25,7 +26,7 @@ public class CLIPnP {
      * Creates a new CLIPnP and opens some starter ports based on the config file provided.
      * @param config The configuration to use.
      */
-    public CLIPnP(Config config) {
+    public CLIPnP(Configuration config) {
         bindings = new ArrayList<>();
         openAllPorts(config.getBindings());
     }
@@ -50,7 +51,7 @@ public class CLIPnP {
      * @param index The position to remove from current config.
      */
     public void closePortByIndex(int index){
-        System.out.println((bindings.get(index)).close());
+        Console.println((bindings.get(index)).close());
         bindings.remove(index);
     }
 
@@ -62,14 +63,14 @@ public class CLIPnP {
     public void openPort(Protocol protocol, int port){
         // If outside of range
         if(port < 0 || port > 65535){
-            System.out.println("(ERROR) Invalid port number. Accepted range: 0-65535.");
+            Console.println("(ERROR) Invalid port number. Accepted range: 0-65535.");
             return;
         }
 
         // Ensure this binding doesnt already exist.
         Bind newBind = new Bind(protocol, port);
         if(containsBind(newBind) != null){
-            System.out.println("(ERROR) Binding already exists.");
+            Console.println("(ERROR) Binding already exists.");
             return;
         }
 
@@ -128,7 +129,7 @@ public class CLIPnP {
         Bind bind = containsBind(new Bind(protocol,port));
         if(bind != null){
             bindings.remove(bind);
-            System.out.println(bind.close() + " and removed it from config.");
+            Console.println(bind.close() + " and removed it from config.");
         }
         else{
             boolean success;
@@ -140,10 +141,10 @@ public class CLIPnP {
             }
 
             if(success){
-                System.out.println("(i) Successfully closed port "+protocol+":"+port);
+                Console.sendResponse("Successfully closed port "+protocol+":"+port);
             }
             else{
-                System.out.println("(ERROR) Could not close port "+protocol+":"+port);
+                Console.sendError("Could not close port "+protocol+":"+port);
             }
         }
     }
@@ -155,12 +156,12 @@ public class CLIPnP {
     public void addConfig(String filepath) {
         try {
             // Read the config data
-            Config toAdd = Config.readFromFile(filepath);
+            Configuration toAdd = Configuration.readFromFile(filepath);
             // Open all the ports
             int no = openAllPorts(toAdd.getBindings());
-            System.out.println("(i) Successfully added ("+no+") new bindings.");
+            Console.sendResponse("Successfully added ("+no+") new bindings.");
         } catch (IOException e) {
-            System.out.println("(ERROR) Could not get config data from file: "+filepath);
+            Console.sendError("Could not get config data from file: "+filepath);
         }
     }
 
@@ -178,7 +179,7 @@ public class CLIPnP {
      * @param dir The directory to save to, not a specific file. Saves as "config.clip"
      */
     public void save(String dir){
-        new Config(bindings).saveToFile(dir);
+        new Configuration(bindings).saveToFile(dir);
     }
 
     /**
@@ -186,23 +187,38 @@ public class CLIPnP {
      * @param version The version of the software.
      */
     public void printInfo(String version){
+        // Version info & App info
         Main.printVersionInfo(version);
-        System.out.println();
+        Console.println("");
 
-        // Network Info
-        System.out.println("\t Network Info:");
-        System.out.println("\t\t Local IP: "+UPnP.getLocalIP());
-        System.out.println("\t\t Public IP: "+UPnP.getExternalIP());
-        System.out.println("\t\t Default Gateway: "+UPnP.getDefaultGatewayIP());
-        System.out.println();
+        // Network info
+        printNetworkInfo();
 
-        // Print all bindings.
-        System.out.println("\t Bindings:");
+        // Bindings
+        printBindings();
+        Console.println("");
+    }
+
+    /**
+     * Prints the current network information.
+     */
+    public void printNetworkInfo(){
+        Console.println("\t Network Info:");
+        Console.println("\t\t Local IP: "+UPnP.getLocalIP());
+        Console.println("\t\t Public IP: "+UPnP.getExternalIP());
+        Console.println("\t\t Default Gateway: "+UPnP.getDefaultGatewayIP());
+        Console.println("");
+    }
+
+    /**
+     * Prints all current bindings. Omits any previous/disabled bindings.
+     */
+    public void printBindings(){
+        Console.println("\t Active Bindings:");
         int counter = 1;
         for(Bind bind : bindings){
-            System.out.println("\t\t "+counter+". "+bind.toString());
+            Console.println("\t\t "+counter+". "+bind.toString());
         }
-        System.out.println();
     }
 
     /**
@@ -211,7 +227,7 @@ public class CLIPnP {
      */
     public void close(){
         for(Bind bind : bindings){
-            System.out.println(bind.close());
+            Console.println(bind.close());
         }
     }
 }

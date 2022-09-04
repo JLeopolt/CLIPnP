@@ -4,11 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7d35baf5-9499-4bec-974c-73fc0a56c9c3" name="Changes" comment="Added full JavaDocs documentation for the entire project. Fixed config files not being read from command-line arguments.">
+    <list default="true" id="7d35baf5-9499-4bec-974c-73fc0a56c9c3" name="Changes" comment="CLIPnP will now use .clip files instead of .JSON for more intuitive config saving. However, .JSON files will still be acceptable, and any file that contains a valid config JSON object (even a .txt file) will be accepted.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Network.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/commands/Port.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Console.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/CLIPnP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/CLIPnP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Config.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Configuration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Bind.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Bind.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Protocol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ml/pyroneon/util/Protocol.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -204,7 +211,14 @@
       <option name="project" value="LOCAL" />
       <updated>1658805349696</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="CLIPnP will now use .clip files instead of .JSON for more intuitive config saving. However, .JSON files will still be acceptable, and any file that contains a valid config JSON object (even a .txt file) will be accepted.">
+      <created>1658840553232</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1658840553232</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -222,6 +236,7 @@
     <MESSAGE value="Initial commit." />
     <MESSAGE value="Added support for filepaths with spaces in them. Fixed config commands. Fixed behind the scenes JSONArray to ArrayList." />
     <MESSAGE value="Added full JavaDocs documentation for the entire project. Fixed config files not being read from command-line arguments." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added full JavaDocs documentation for the entire project. Fixed config files not being read from command-line arguments." />
+    <MESSAGE value="CLIPnP will now use .clip files instead of .JSON for more intuitive config saving. However, .JSON files will still be acceptable, and any file that contains a valid config JSON object (even a .txt file) will be accepted." />
+    <option name="LAST_COMMIT_MESSAGE" value="CLIPnP will now use .clip files instead of .JSON for more intuitive config saving. However, .JSON files will still be acceptable, and any file that contains a valid config JSON object (even a .txt file) will be accepted." />
   </component>
 </project>
