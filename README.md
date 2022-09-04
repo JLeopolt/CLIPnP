@@ -18,16 +18,17 @@ Are you a coder yourself? Working with CLIPnP is a breeze with the specific, tra
 Jar not launching? Here's a quick-fix:
 WINDOWS:
 1. Create a new text-file; rename it to *run.bat
-2. Open it, then type: java -jar <path to your jar file, and it's filename>.jar
+2. Open it, then type: 
+- java -jar <path to your jar file, and it's filename>.jar
 3. Save the file
 4. Run it
 
 LINUX:
 1. Create a new .sh file
 2. Open it, then type:
-#!/bin/sh
-cd <folder with your jar file>
-java -jar <your jar's filename>.jar
+- #!/bin/sh
+- cd <folder with your jar file>
+- java -jar <your jar's filename>.jar
 
 Copyright (c) 2022 PyroNeon Software.
-Licensed under LGPL3
+Licensed Under GNU LESSER GENERAL PUBLIC LICENSE Version 2.1
