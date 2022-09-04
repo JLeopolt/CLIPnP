@@ -14,21 +14,27 @@ public class Port {
      * @param args Parsed list of each argument.
      */
     public static void execute(String[] args){
+        if(args.length <= 1){
+            help();
+            return;
+        }
         if(args[1].equals("open")){
             open(args);
+            return;
         }
         else if(args[1].equals("close")){
             close(args);
+            return;
         }
         else if(args[1].equals("query")){
             query(args);
+            return;
         }
         else if(args[1].equals("list")){
             list();
+            return;
         }
-        else{
-            Console.sendSyntaxError(Port.class.getName());
-        }
+        Console.sendSyntaxError(Port.class.getSimpleName());
     }
 
     /**
@@ -99,5 +105,18 @@ public class Port {
      */
     private static void list(){
         Main.cliPnP.printBindings();
+    }
+
+    /**
+     * Displays some helpful information about this command.
+     */
+    public static void help(){
+        Console.println("""
+                \t port - Interact with a port. Acceptable port range is 0-65535.
+                \t\t port open <tcp, udp> <0-65535> - Opens a new port based on params.
+                \t\t port close index <i> - Closes registered port and removes it from config by index. Index starts from 1.
+                \t\t port close <tcp, udp> <0-65535> - Forcefully closes a port, if registered, removes it from current config.
+                \t\t port query <tcp, udp> <0-65535> - Get a port's status. (Open/Closed)
+                \t\t port list - Lists all currently open ports (controlled by CLIPnP).""");
     }
 }

@@ -13,11 +13,15 @@ public class Network {
      * @param args Parsed list of each argument.
      */
     public static void execute(String[] args){
+        if(args.length <= 1){
+            help();
+            return;
+        }
         if(args[1].equals("list")){
             list();
             return;
         }
-        Console.sendSyntaxError(Network.class.getName());
+        Console.sendSyntaxError(Network.class.getSimpleName());
     }
 
     /**
@@ -25,5 +29,14 @@ public class Network {
      */
     private static void list(){
         Main.cliPnP.printNetworkInfo();
+    }
+
+    /**
+     * Displays some helpful information about this command.
+     */
+    public static void help(){
+        Console.println("""
+                \t network - Interact with the network.
+                \t\t network list - View network information.""");
     }
 }

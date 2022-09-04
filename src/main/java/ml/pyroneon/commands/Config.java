@@ -2,6 +2,7 @@ package ml.pyroneon.commands;
 
 import ml.pyroneon.Main;
 import ml.pyroneon.util.Console;
+import ml.pyroneon.util.Path;
 
 /**
  * Handles all user interactions with the configuration settings.
@@ -14,17 +15,20 @@ public class Config {
      */
     public static void execute(String msg){
         String[] parsed = msg.split(" ");
-
-        if(parsed[1].equals("add")){
+        if(parsed.length <= 1){
+            help();
+            return;
+        }
+        if(parsed[1].equals("add")) {
             add(msg);
             return;
         }
-        else if(parsed[1].equals("save")){
+        else if (parsed[1].equals("save")) {
             save(msg);
             return;
         }
 
-        Console.sendSyntaxError(Config.class.getName());
+        Console.sendSyntaxError(Config.class.getSimpleName());
     }
 
     /**
@@ -32,7 +36,7 @@ public class Config {
      * @param msg Takes the entire unparsed message as parameter.
      */
     private static void add(String msg){
-        Main.cliPnP.addConfig(Main.getFilepath(msg));
+        Main.cliPnP.addConfig(Path.getFilepath(msg));
     }
 
     /**
@@ -40,6 +44,16 @@ public class Config {
      * @param msg Takes the entire unparsed message as parameter.
      */
     private static void save(String msg){
-        Main.cliPnP.save(Main.getFilepath(msg));
+        Main.cliPnP.save(Path.getSaveFilepath(msg));
+    }
+
+    /**
+     * Displays some helpful information about this command.
+     */
+    public static void help(){
+        Console.println("""
+                \t config - Interact with the config.
+                \t\t config add <filepath> - Adds bindings from a file, to current config. (Use single quotes)
+                \t\t config save <directory> - Saves current config to a directory (Use single quotes), as "config.json\"""");
     }
 }

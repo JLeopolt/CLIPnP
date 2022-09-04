@@ -223,11 +223,14 @@ public class CLIPnP {
 
     /**
      * Closes all ports, without removing them from the current config. Informs the user of each port's
-     * status and whether they were successfully closed or not.
+     * status and whether they were successfully closed or not. Tallies up the number of bindings closed.
      */
     public void close(){
+        int counter = 0;
         for(Bind bind : bindings){
             Console.println(bind.close());
+            counter++;
         }
+        Console.sendResponse("Closed "+counter+" open bindings.");
     }
 }

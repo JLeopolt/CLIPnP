@@ -96,7 +96,7 @@ public class Console {
         // If no classname specified, ignore it.
         String prefix = "";
         if(!classname.isEmpty()){
-            prefix = "["+classname+"]";
+            prefix = "["+classname+"] ";
         }
 
         System.out.println(getError( prefix + "Invalid syntax. See \"help\" for command help."));
