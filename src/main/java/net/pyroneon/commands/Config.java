@@ -1,8 +1,8 @@
-package ml.pyroneon.commands;
+package net.pyroneon.commands;
 
-import ml.pyroneon.Main;
-import ml.pyroneon.util.Console;
-import ml.pyroneon.util.Path;
+import net.pyroneon.Main;
+import net.pyroneon.util.Console;
+import net.pyroneon.util.Path;
 
 /**
  * Handles all user interactions with the configuration settings.

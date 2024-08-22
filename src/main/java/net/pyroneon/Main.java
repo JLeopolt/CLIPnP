@@ -1,11 +1,11 @@
-package ml.pyroneon;
+package net.pyroneon;
 
-import ml.pyroneon.commands.Config;
-import ml.pyroneon.commands.Help;
-import ml.pyroneon.commands.Network;
-import ml.pyroneon.commands.Port;
-import ml.pyroneon.util.Console;
-import ml.pyroneon.util.Path;
+import net.pyroneon.commands.Config;
+import net.pyroneon.commands.Help;
+import net.pyroneon.commands.Network;
+import net.pyroneon.commands.Port;
+import net.pyroneon.util.Console;
+import net.pyroneon.util.Path;
 
 import java.util.Scanner;
 
@@ -29,9 +29,9 @@ public class Main {
                         " | |    | |      | | |  ___/ '_ \\|  ___/ \n" +
                         " | |____| |____ _| |_| |   | | | | |     \n" +
                         "  \\_____|______|_____|_|   |_| |_|_|     \n");
-        Console.sendDetails("CLIPnP " + version + " Copyright (c) 2022 PyroNeon Software");
+        Console.sendDetails("CLIPnP " + version + " Copyright (c) 2024 PyroNeon Software");
         Console.sendDetails("Licensed under LGPL3 - \"help\" for command help.");
-        Console.sendWarning("This is a BETA version! Please report any bugs to PyroNeon!");
+        Console.sendWarning("This is a BETA version. Contact us at PyroNeon.net if you experience an issue.");
     }
 
     /**
@@ -84,26 +84,14 @@ public class Main {
         String line = keyboard.nextLine();
         while(!line.equals("stop")){
             String[] parsed = line.split(" ");
-
-            if(parsed[0].equals("help") || parsed[0].equals("?")){
-                Help.execute(parsed);
+            switch (parsed[0]) {
+                case "help", "?" -> Help.execute(parsed);
+                case "config" -> Config.execute(line);
+                case "info" -> cliPnP.printInfo(version);
+                case "port" -> Port.execute(parsed);
+                case "network" -> Network.execute(parsed);
+                default -> Console.sendWarning("Unknown command entered. Please enter \"help\" for command help.");
             }
-            else if(parsed[0].equals("config")){
-                Config.execute(line);
-            }
-            else if(parsed[0].equals("info")){
-                cliPnP.printInfo(version);
-            }
-            else if(parsed[0].equals("port")){
-                Port.execute(parsed);
-            }
-            else if(parsed[0].equals("network")){
-                Network.execute(parsed);
-            }
-            else{
-                Console.sendWarning("Unknown command entered. Please enter \"help\" for command help.");
-            }
-
             Console.promptUser();
             line = keyboard.nextLine();
         }

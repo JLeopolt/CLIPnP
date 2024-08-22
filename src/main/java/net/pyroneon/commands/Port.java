@@ -1,8 +1,8 @@
-package ml.pyroneon.commands;
+package net.pyroneon.commands;
 
-import ml.pyroneon.Main;
-import ml.pyroneon.util.Console;
-import ml.pyroneon.util.Protocol;
+import net.pyroneon.Main;
+import net.pyroneon.util.Console;
+import net.pyroneon.util.Protocol;
 
 /**
  * Handles user commands regarding port opening,closing,querying,etc.

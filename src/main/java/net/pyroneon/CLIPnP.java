@@ -1,9 +1,9 @@
-package ml.pyroneon;
+package net.pyroneon;
 
 import com.simtechdata.waifupnp.UPnP;
-import ml.pyroneon.util.Bind;
-import ml.pyroneon.util.Console;
-import ml.pyroneon.util.Protocol;
+import net.pyroneon.util.Bind;
+import net.pyroneon.util.Console;
+import net.pyroneon.util.Protocol;
 
 import java.io.IOException;
 import java.util.ArrayList;

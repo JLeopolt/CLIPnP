@@ -1,4 +1,4 @@
-package ml.pyroneon.util;
+package net.pyroneon.util;
 
 /**
  * Represents network protocol.

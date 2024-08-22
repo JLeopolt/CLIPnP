@@ -1,4 +1,4 @@
-package ml.pyroneon.util;
+package net.pyroneon.util;
 
 /**
  * Used to maintain consistent formatting for the Console output of command-line execution.

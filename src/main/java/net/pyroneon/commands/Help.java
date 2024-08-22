@@ -1,6 +1,6 @@
-package ml.pyroneon.commands;
+package net.pyroneon.commands;
 
-import ml.pyroneon.util.Console;
+import net.pyroneon.util.Console;
 
 /**
  * Offers the client detailed support with command syntax and functionality.

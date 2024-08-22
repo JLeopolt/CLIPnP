@@ -1,12 +1,10 @@
-package ml.pyroneon;
+package net.pyroneon;
 
-import ml.pyroneon.commands.Config;
-import ml.pyroneon.util.Console;
+import net.pyroneon.util.Console;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import ml.pyroneon.util.Bind;
+import net.pyroneon.util.Bind;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;

@@ -1,7 +1,7 @@
-package ml.pyroneon.commands;
+package net.pyroneon.commands;
 
-import ml.pyroneon.Main;
-import ml.pyroneon.util.Console;
+import net.pyroneon.Main;
+import net.pyroneon.util.Console;
 
 /**
  * Handles all interactions with the network, currently just for viewing information.

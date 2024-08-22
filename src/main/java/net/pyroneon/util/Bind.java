@@ -1,4 +1,4 @@
-package ml.pyroneon.util;
+package net.pyroneon.util;
 
 import com.simtechdata.waifupnp.UPnP;
 import org.json.JSONObject;
